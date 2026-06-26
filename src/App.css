@@ -281,6 +281,11 @@
   transition: all 0.2s ease;
 }
 
+.form-input option {
+  background-color: #111422;
+  color: #f3f4f6;
+}
+
 .form-input:focus {
   outline: none;
   border-color: var(--accent-purple);
