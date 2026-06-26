@@ -153,7 +153,7 @@ export default function PreprocessingBoard({ inputData }) {
         ⚙️ Pipeline Preprocessing Data
       </h3>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '20px' }}>
+      <div className="preprocessing-grid">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {steps.map((step, idx) => {
             const Icon = step.icon;

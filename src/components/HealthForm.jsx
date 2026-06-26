@@ -319,6 +319,22 @@ export default function HealthForm({ onSubmit, initialData }) {
         </label>
         <div className="checkbox-grid">
           <div
+            className={`checkbox-tile ${!formData.history.hypertension && !formData.history.diabetes && !formData.history.heartDisease ? 'checked' : ''}`}
+            onClick={() => {
+              setFormData((prev) => ({
+                ...prev,
+                history: {
+                  hypertension: false,
+                  diabetes: false,
+                  heartDisease: false
+                }
+              }));
+            }}
+          >
+            <span>Tidak Ada Riwayat Keluarga</span>
+          </div>
+
+          <div
             className={`checkbox-tile ${formData.history.hypertension ? 'checked' : ''}`}
             onClick={() => handleHistoryChange('hypertension')}
           >
@@ -328,7 +344,7 @@ export default function HealthForm({ onSubmit, initialData }) {
               readOnly
               style={{ display: 'none' }}
             />
-            <span>Hipertensi (Tekanan Darah Tinggi)</span>
+            <span>Hipertensi (Tinggi)</span>
           </div>
 
           <div

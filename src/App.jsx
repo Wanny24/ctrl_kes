@@ -2,7 +2,6 @@ import { useState, useMemo } from 'react';
 import { 
   LayoutDashboard, 
   ClipboardList, 
-  BrainCircuit, 
   TrendingUp, 
   Bot, 
   Activity, 
@@ -15,7 +14,6 @@ import './App.css';
 import HealthForm from './components/HealthForm';
 import PreprocessingBoard from './components/PreprocessingBoard';
 import AIScanningLoader from './components/AIScanningLoader';
-import ModelVisualizer from './components/ModelVisualizer';
 import DashboardOverview from './components/DashboardOverview';
 import FuturePrediction from './components/FuturePrediction';
 import AIHealthCoach from './components/AIHealthCoach';
@@ -114,14 +112,6 @@ export default function App() {
           </button>
 
           <button 
-            onClick={() => setActiveTab('lab')} 
-            className={`nav-item ${activeTab === 'lab' ? 'active' : ''}`}
-          >
-            <BrainCircuit size={18} />
-            <span>Lab Deep Learning</span>
-          </button>
-
-          <button 
             onClick={() => setActiveTab('projection')} 
             className={`nav-item ${activeTab === 'projection' ? 'active' : ''}`}
           >
@@ -177,18 +167,6 @@ export default function App() {
             </div>
             <HealthForm onSubmit={handleFormSubmit} initialData={rawData} />
             <PreprocessingBoard inputData={rawData} />
-          </div>
-        )}
-
-        {activeTab === 'lab' && (
-          <div>
-            <div className="header-section">
-              <div className="header-title">
-                <h1>Lab Pelatihan Model Deep Learning</h1>
-                <p>Kelola hyperparameter model, visualisasikan propagasi layer, dan amati tingkat loss saat model belajar.</p>
-              </div>
-            </div>
-            <ModelVisualizer mlpModel={mlpModel} setMlpModel={setMlpModel} />
           </div>
         )}
 

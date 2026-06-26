@@ -118,6 +118,43 @@
   }
 }
 
+@media (max-width: 768px) {
+  .sidebar {
+    padding: 16px;
+    gap: 16px;
+  }
+  .sidebar-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 100%;
+    padding-bottom: 6px;
+    gap: 8px;
+    scrollbar-width: none;
+  }
+  .sidebar-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .nav-item {
+    padding: 8px 12px;
+    font-size: 13px;
+    flex-shrink: 0;
+    width: auto;
+    display: inline-flex;
+    justify-content: center;
+  }
+  .sidebar-footer {
+    display: none;
+  }
+  .brand-section {
+    justify-content: center;
+    width: 100%;
+  }
+  .chat-container-panel {
+    height: 70vh;
+  }
+}
+
 /* Top bar style */
 .header-section {
   display: flex;
@@ -144,6 +181,33 @@
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
   margin-bottom: 30px;
+}
+
+/* Responsive Custom Utility grids */
+.dials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .dials-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
+
+.preprocessing-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .preprocessing-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
 }
 
 .status-badge {

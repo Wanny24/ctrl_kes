@@ -139,7 +139,7 @@ export default function DashboardOverview({ prediction, rawData, onBackToForm })
       </div>
 
       {/* Row of Gauges */}
-      <div className="cards-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+      <div className="dials-grid">
         <RiskDial title="Risiko Hipertensi" percentage={hypertensionRisk * 100} colorGradient="yellowGradient" />
         <RiskDial title="Risiko Diabetes" percentage={diabetesRisk * 100} colorGradient="cyanGradient" />
         <RiskDial title="Risiko Penyakit Jantung" percentage={heartDiseaseRisk * 100} colorGradient="purpleGradient" />
