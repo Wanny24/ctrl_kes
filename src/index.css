@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Color Palette */
+  --bg-deep: #07080f;
+  --bg-panel: #111422;
+  --bg-panel-rgb: 17, 20, 34;
+  --border-light: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(155, 81, 224, 0.3);
+  
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  
+  /* Accent Gradients */
+  --accent-purple: #9d4edd;
+  --accent-purple-rgb: 157, 78, 221;
+  --accent-cyan: #06b6d4;
+  --accent-cyan-rgb: 6, 182, 212;
+  --accent-emerald: #10b981;
+  --accent-emerald-rgb: 16, 185, 129;
+  
+  /* Status Colors */
+  --color-healthy: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  
+  --shadow-glow: 0 0 20px rgba(157, 78, 221, 0.15);
+  --shadow-neon: 0 0 30px rgba(6, 182, 212, 0.2);
+  
+  /* Fonts */
+  --font-heading: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  font-size: 16px;
+  line-height: 1.5;
+  color-scheme: dark;
+  color: var(--text-primary);
+  background-color: var(--bg-deep);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 0%, #15122e 0%, var(--bg-deep) 70%);
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  border-inline: none;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-purple);
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: rgba(var(--bg-panel-rgb), 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Heading Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+/* Typography Gradient helper */
+.text-gradient {
+  background: linear-gradient(135deg, #00f2fe 0%, #9b51e0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-green {
+  background: linear-gradient(135deg, #00f5d4 0%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-pink {
+  background: linear-gradient(135deg, #ff0054 0%, #ff5400 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Tab Layout Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Animations */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(157, 78, 221, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(157, 78, 221, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(157, 78, 221, 0.1);
+  }
+}
+
+@keyframes scanning {
+  0% {
+    top: 0%;
+  }
+  50% {
+    top: 100%;
+  }
+  100% {
+    top: 0%;
+  }
+}
+
+@keyframes gridSlide {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 40px;
+  }
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  40% {
+    transform: scale(1.05);
+  }
+  60% {
+    transform: scale(1.15);
+  }
+}
+
+.pulse-glowing {
+  animation: pulseGlow 2.5s infinite;
+}
+
+.heart-beating {
+  animation: heartbeat 1.5s infinite;
+}
