@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Calendar, Plus, Trash2, LineChart, Cpu, TrendingDown } from 'lucide-react';
 import { LSTMForecaster } from '../utils/lstm';
+import { supabase } from '../utils/supabaseClient';
 
 export default function FuturePrediction() {
   // Initial historical logs (similar to the user's example)
@@ -20,23 +21,99 @@ export default function FuturePrediction() {
   const [newDia, setNewDia] = useState(80);
   const [newSugar, setNewSugar] = useState(105);
 
-  const handleAddLog = () => {
-    const nextWeek = logs.length > 0 ? Math.max(...logs.map(l => l.week)) + 1 : 1;
-    setLogs(prev => [
-      ...prev,
-      {
-        week: nextWeek,
-        cholesterol: parseInt(newChol),
-        systolic: parseInt(newSys),
-        diastolic: parseInt(newDia),
-        sugar: parseInt(newSugar)
+  // Load logs from Supabase on mount
+  useEffect(() => {
+    async function loadLogs() {
+      if (!supabase) return;
+      try {
+        const { data, error } = await supabase
+          .from('health_logs')
+          .select('*')
+          .order('week', { ascending: true });
+
+        if (error) {
+          console.error("Gagal mengambil log kesehatan dari Supabase:", error);
+          return;
+        }
+
+        if (data && data.length > 0) {
+          setLogs(data);
+          console.log("Berhasil memuat log mingguan dari database Supabase!");
+        }
+      } catch (err) {
+        console.error("Gagal terhubung ke database Supabase:", err);
       }
-    ]);
+    }
+    loadLogs();
+  }, []);
+
+  const handleAddLog = async () => {
+    const nextWeek = logs.length > 0 ? Math.max(...logs.map(l => l.week)) + 1 : 1;
+    const newEntry = {
+      week: nextWeek,
+      cholesterol: parseInt(newChol),
+      systolic: parseInt(newSys),
+      diastolic: parseInt(newDia),
+      sugar: parseInt(newSugar)
+    };
+
+    // Update local state first for immediate UI response
+    setLogs(prev => [...prev, newEntry]);
+
+    if (supabase) {
+      try {
+        const { error } = await supabase
+          .from('health_logs')
+          .insert([newEntry]);
+
+        if (error) {
+          console.error("Gagal menyimpan entri baru ke Supabase:", error);
+        } else {
+          // Sync state with database to get actual IDs
+          const { data } = await supabase
+            .from('health_logs')
+            .select('*')
+            .order('week', { ascending: true });
+          if (data) {
+            setLogs(data);
+          }
+        }
+      } catch (err) {
+        console.error("Kesalahan jaringan saat menyimpan log ke Supabase:", err);
+      }
+    }
   };
 
-  const handleRemoveLog = (weekToRemove) => {
-    setLogs(prev => prev.filter(l => l.week !== weekToRemove).map((l, idx) => ({ ...l, week: idx + 1 })));
+  const handleRemoveLog = async (weekToRemove) => {
+    const targetLog = logs.find(l => l.week === weekToRemove);
+    const updatedLocalLogs = logs.filter(l => l.week !== weekToRemove).map((l, idx) => ({ ...l, week: idx + 1 }));
+    
+    setLogs(updatedLocalLogs);
     setForecastResults([]);
+
+    if (supabase) {
+      try {
+        if (targetLog && targetLog.id) {
+          // Delete from database by id
+          await supabase.from('health_logs').delete().eq('id', targetLog.id);
+        } else {
+          // Fallback delete by week number
+          await supabase.from('health_logs').delete().eq('week', weekToRemove);
+        }
+
+        // Update the week indexes of the remaining logs in Supabase to keep them sequential
+        for (const item of updatedLocalLogs) {
+          if (item.id) {
+            await supabase
+              .from('health_logs')
+              .update({ week: item.week })
+              .eq('id', item.id);
+          }
+        }
+      } catch (err) {
+        console.error("Gagal menghapus log dari Supabase:", err);
+      }
+    }
   };
 
   const handlePredict = () => {

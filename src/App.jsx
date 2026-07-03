@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { supabase } from './utils/supabaseClient';
 import { 
   LayoutDashboard, 
   ClipboardList, 
@@ -23,7 +24,7 @@ import { MultilayerPerceptron } from './utils/mlp';
 import { preprocessInput } from './utils/preprocessor';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('input');
   const [showScanner, setShowScanner] = useState(false);
 
   // Initialize the MLP model with pre-calibrated default weights
@@ -60,6 +61,57 @@ export default function App() {
   // Hypertension: 92%, Diabetes: 71%, Heart Disease: 65%
   const [prediction, setPrediction] = useState([0.92, 0.71, 0.65]);
 
+  // Load latest profile and prediction from Supabase on mount
+  useEffect(() => {
+    async function loadLatestProfile() {
+      if (!supabase) return;
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .order('id', { ascending: false })
+          .limit(1);
+
+        if (error) {
+          console.error("Gagal mengambil profil dari Supabase:", error);
+          return;
+        }
+
+        if (data && data.length > 0) {
+          const latest = data[0];
+          setRawData({
+            age: latest.age,
+            gender: latest.gender,
+            height: latest.height,
+            weight: latest.weight,
+            systolic: latest.systolic,
+            diastolic: latest.diastolic,
+            cholesterol: latest.cholesterol,
+            sugar: latest.sugar,
+            heartRate: latest.heart_rate,
+            smoke: latest.smoke,
+            activity: latest.activity,
+            diet: latest.diet,
+            history: latest.history || {
+              hypertension: false,
+              diabetes: false,
+              heartDisease: false
+            }
+          });
+          setPrediction([
+            latest.prediction_hypertension ?? 0.92,
+            latest.prediction_diabetes ?? 0.71,
+            latest.prediction_heart_disease ?? 0.65
+          ]);
+          console.log("Berhasil memuat profil terakhir dari database Supabase!");
+        }
+      } catch (err) {
+        console.error("Gagal terhubung ke database Supabase:", err);
+      }
+    }
+    loadLatestProfile();
+  }, []);
+
   // Handle form submissions: triggers loading scan animation and executes the MLP network
   const handleFormSubmit = (data) => {
     setRawData(data);
@@ -67,7 +119,7 @@ export default function App() {
   };
 
   // Run inference and complete the loading animation
-  const handleScanComplete = () => {
+  const handleScanComplete = async () => {
     setShowScanner(false);
     
     // Process raw inputs into 1D normalized tensor vector (size=16)
@@ -79,6 +131,42 @@ export default function App() {
     
     // Switch to Dashboard tab to display results
     setActiveTab('dashboard');
+
+    // Save profile and predictions to Supabase
+    if (supabase) {
+      try {
+        const { error } = await supabase
+          .from('profiles')
+          .insert([
+            {
+              age: rawData.age,
+              gender: rawData.gender,
+              height: rawData.height,
+              weight: rawData.weight,
+              systolic: rawData.systolic,
+              diastolic: rawData.diastolic,
+              cholesterol: rawData.cholesterol,
+              sugar: rawData.sugar,
+              heart_rate: rawData.heartRate,
+              smoke: rawData.smoke,
+              activity: rawData.activity,
+              diet: rawData.diet,
+              history: rawData.history,
+              prediction_hypertension: output[0],
+              prediction_diabetes: output[1],
+              prediction_heart_disease: output[2]
+            }
+          ]);
+
+        if (error) {
+          console.error("Gagal menyimpan profil ke Supabase:", error);
+        } else {
+          console.log("Profil kesehatan berhasil disimpan ke database Supabase.");
+        }
+      } catch (err) {
+        console.error("Kesalahan jaringan saat menyimpan profil ke Supabase:", err);
+      }
+    }
   };
 
   return (
@@ -96,19 +184,19 @@ export default function App() {
 
         <nav className="sidebar-nav">
           <button 
-            onClick={() => setActiveTab('dashboard')} 
-            className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
+            onClick={() => setActiveTab('input')} 
+            className={`nav-item ${activeTab === 'input' ? 'active' : ''}`}
           >
             <LayoutDashboard size={18} />
             <span>Dashboard</span>
           </button>
           
           <button 
-            onClick={() => setActiveTab('input')} 
-            className={`nav-item ${activeTab === 'input' ? 'active' : ''}`}
+            onClick={() => setActiveTab('dashboard')} 
+            className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
           >
             <ClipboardList size={18} />
-            <span>Input Kesehatan</span>
+            <span>Output</span>
           </button>
 
           <button 
@@ -145,7 +233,7 @@ export default function App() {
           <div>
             <div className="header-section">
               <div className="header-title">
-                <h1>Overview Kesehatan Anda</h1>
+                <h1>Output Analisis Kesehatan</h1>
                 <p>Estimasi risiko penyakit kardiovaskular & metabolik menggunakan model saraf tiruan (MLP).</p>
               </div>
             </div>
@@ -161,7 +249,7 @@ export default function App() {
           <div>
             <div className="header-section">
               <div className="header-title">
-                <h1>Input & Preprocessing Data</h1>
+                <h1>Dashboard Input Kesehatan</h1>
                 <p>Masukkan metrik medis terkini Anda untuk diumpankan ke model prediksi.</p>
               </div>
             </div>
