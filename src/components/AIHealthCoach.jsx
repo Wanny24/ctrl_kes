@@ -143,6 +143,43 @@ Mengontrol tekanan darah memerlukan kombinasi terapi gaya hidup sehat dan obat-o
 ⚠️ *Penting:* Jangan pernah mengonsumsi atau menghentikan obat tensi tanpa resep dari dokter Anda!`;
     }
 
+    if (query.includes('pencegahan') && (query.includes('hipertensi') || query.includes('tensi') || query.includes('darah tinggi'))) {
+      return `🥦 **Pencegahan & Pola Makan Sehat Hipertensi**
+
+Mencegah kenaikan tekanan darah berfokus pada asupan nutrisi yang melancarkan aliran darah:
+
+1. **Konsumsi Kalium Tinggi:** Kalium membantu ginjal membuang kelebihan natrium melalui urine dan melemaskan dinding pembuluh darah. Makanan kaya kalium meliputi **pisang, alpukat, kentang kukus, melon, dan sayuran hijau (bayam)**.
+2. **Asupan Magnesium & Kalsium:** Membantu regulasi kontraksi pembuluh darah. Dapatkan dari **kacang almond, biji chia, dan yogurt rendah lemak**.
+3. **Batasi Natrium secara Ketat:** Hindari garam dapur berlebih, penyedap rasa (MSG), kecap asin, saus kemasan, mentega asin, makanan kaleng, dan keripik asin.
+4. **Hindari Kafein & Alkohol:** Kafein dapat memicu kenaikan denyut jantung dan tensi secara mendadak.`;
+    }
+
+    if (query.includes('bahaya') && (query.includes('hipertensi') || query.includes('tensi') || query.includes('darah tinggi'))) {
+      return `⚠️ **Bahaya & Komplikasi Hipertensi Jangka Panjang**
+
+Hipertensi kronis yang tidak terkontrol akan merusak sistem pembuluh darah dan organ vital secara perlahan:
+
+1. **Stroke (Pecahnya Pembuluh Darah Otak):** Tekanan darah tinggi melemahkan pembuluh darah arteri otak hingga berisiko pecah atau tersumbat, memicu kelumpuhan.
+2. **Serangan Jantung & Gagal Jantung:** Jantung dipaksa memompa lebih keras melawan tekanan tinggi, menyebabkan penebalan otot jantung (*hipertrofi*) yang berakhir pada gagal jantung.
+3. **Gagal Ginjal Kronis (Nefropati):** Pembuluh darah halus di ginjal rusak, sehingga ginjal kehilangan kemampuan menyaring racun dari darah.
+4. **Kebutaan (Retinopati Hipertensi):** Pembuluh darah retina mata pecah atau menyempit, memicu gangguan penglihatan permanen.
+5. **Penurunan Kognitif & Demensia:** Aliran darah ke otak yang terhambat mempercepat penuaan otak dan pikun.`;
+    }
+
+    if (query.includes('klasifikasi') && (query.includes('tekanan') || query.includes('tensi'))) {
+      return `📊 **Klasifikasi Tekanan Darah (Standar AHA/Kemenkes)**
+
+Pengukuran tekanan darah dibagi menjadi beberapa kategori untuk dewasa (dalam mmHg):
+
+1. **Normal:** Sistolik **< 120** DAN Diastolik **< 80**
+2. **Prehipertensi (Elevated):** Sistolik **120 - 129** DAN Diastolik **< 80**
+3. **Hipertensi Derajat 1:** Sistolik **130 - 139** ATAU Diastolik **80 - 89**
+4. **Hipertensi Derajat 2:** Sistolik **>= 140** ATAU Diastolik **>= 90**
+5. **Krisis Hipertensi:** Sistolik **> 180** dan/atau Diastolik **> 120** *(Memerlukan penanganan IGD segera)*
+
+💡 *Tensi Anda:* Tensi Anda saat ini tercatat **${rawData.systolic}/${rawData.diastolic} mmHg**, yang masuk dalam kategori **${rawData.systolic >= 140 || rawData.diastolic >= 90 ? "Hipertensi Derajat 2" : rawData.systolic >= 130 || rawData.diastolic >= 80 ? "Hipertensi Derajat 1" : "Normal/Prehipertensi"}**.`;
+    }
+
     // B. Diabetes Specific Questions
     if (query.includes('gejala') && (query.includes('diabetes') || query.includes('gula') || query.includes('kencing manis'))) {
       return `🍭 **Gejala & Ciri-ciri Diabetes (Kencing Manis)**
@@ -179,6 +216,45 @@ Diabetes adalah kondisi kronis yang tidak bisa disembuhkan secara total tetapi d
 ⚠️ *Penting:* Selalu konsultasikan dosis obat oral dan insulin dengan dokter penyakit dalam.`;
     }
 
+    if (query.includes('pencegahan') && (query.includes('diabetes') || query.includes('gula') || query.includes('kencing manis'))) {
+      return `🥦 **Pencegahan & Pola Makan Sehat Diabetes**
+
+Mencegah diabetes (terutama Tipe 2) berfokus pada menjaga stabilitas kadar insulin dan sensitivitas sel tubuh:
+
+1. **Pilih Karbohidrat Kompleks:** Utamakan makanan dengan **Indeks Glikemik (IG) Rendah** seperti **nasi merah dingin, ubi jalar kukus, oat gandum utuh, brokoli, dan kacang edamame**. Serat tinggi memperlambat pemecahan gula ke dalam darah.
+2. **Hindari Gula Sederhana:** Jauhi sirup, soda, jus buah saring dengan gula tambahan, kue manis, roti putih, dan tepung terigu.
+3. **Kontrol Porsi (Plate Method):** Isi piring makan Anda dengan 1/2 sayuran hijau non-tepung, 1/4 protein rendah lemak (tempe, tahu, dada ayam), dan 1/4 karbohidrat kompleks.
+4. **Peka Terhadap Sinyal Kenyang:** Hindari makan berlebih yang memaksa pankreas memproduksi insulin dalam jumlah besar secara terus menerus.`;
+    }
+
+    if (query.includes('bahaya') && (query.includes('diabetes') || query.includes('gula') || query.includes('kencing manis'))) {
+      return `⚠️ **Bahaya & Komplikasi Kronis Diabetes**
+
+Kadar gula darah yang tinggi secara terus-menerus dapat merusak saraf, pembuluh darah, dan organ vital:
+
+1. **Neuropati Diabetik (Kerusakan Saraf):** Kerusakan saraf tepi menyebabkan kesemutan, mati rasa, atau rasa terbakar di kaki. Luka kecil di kaki bisa tidak terasa dan berkembang menjadi infeksi parah hingga memerlukan **amputasi**.
+2. **Penyakit Kardiovaskular:** Diabetes melipatgandakan risiko serangan jantung dan stroke akibat rusaknya dinding pembuluh darah besar.
+3. **Nefropati Diabetik (Gagal Ginjal):** Gula darah tinggi merusak sistem penyaringan halus ginjal, memicu kebutuhan cuci darah (hemodialisis).
+4. **Retinopati Diabetik (Kebutaan):** Pembuluh darah retina mata membengkak dan bocor, memicu hilangnya penglihatan secara permanen.
+5. **Disfungsi Saraf Otonom:** Menyebabkan masalah pencernaan lambat (*gastroparesis*) atau disfungsi ereksi.`;
+    }
+
+    if (query.includes('perbedaan') && query.includes('tipe') && (query.includes('diabetes') || query.includes('kencing manis'))) {
+      return `🔬 **Perbedaan Diabetes Tipe 1 dan Tipe 2**
+
+Meskipun sama-sama menyebabkan gula darah tinggi, keduanya memiliki penyebab dan penanganan yang sangat berbeda:
+
+1. **Diabetes Tipe 1 (Autoimun):**
+   * **Penyebab:** Sistem imun menyerang dan merusak sel beta penghasil insulin di pankreas. Tubuh **sama sekali tidak bisa memproduksi insulin**.
+   * **Onset:** Biasanya terdeteksi pada usia anak-anak, remaja, atau dewasa muda.
+   * **Penanganan:** Pasien **wajib menggunakan suntikan insulin seumur hidup** untuk bertahan hidup.
+
+2. **Diabetes Tipe 2 (Resistensi Insulin):**
+   * **Penyebab:** Pankreas memproduksi insulin, tetapi sel-sel tubuh **resisten (tidak merespons)** terhadap insulin tersebut. Sangat terkait dengan gaya hidup, obesitas, dan kurang gerak.
+   * **Onset:** Biasanya terdeteksi pada usia dewasa (>30 tahun), namun kini mulai menyerang usia muda akibat obesitas.
+   * **Penanganan:** Modifikasi gaya hidup (diet & olahraga), obat-obatan oral (Metformin), dan kadang insulin jika kondisi memburuk.`;
+    }
+
     // C. Penyakit Jantung Specific Questions
     if (query.includes('gejala') && (query.includes('jantung') || query.includes('koroner') || query.includes('kardio'))) {
       return `❤️ **Gejala & Ciri-ciri Penyakit Jantung (Jantung Koroner & Gagal Jantung)**
@@ -195,7 +271,7 @@ Penyakit jantung umumnya terjadi akibat penyempitan pembuluh darah arteri korone
 5. **Pembengkakan Kaki (Edema):** Penumpukan cairan di pergelangan kaki akibat gagal jantung kanan yang melemah.
 6. **Keringat Dingin & Mual:** Sering muncul tiba-tiba bersamaan dengan nyeri dada.
 
-🚨 **TINDAKAN DARURAT:** Jika Anda mengalami nyeri dada hebat yang menjalar selama lebih dari 15 menit disertai keringat dingin, segera hubungi ambulans (119) atau pergi ke IGD terdekat karena itu adalah tanda **Serangan Jantung Koroner Akut (STEMI)**.`;
+🚨 **TINDAKAN DARURAT:** Jika Anda mengalami nyeri dada hebat yang menjalar selama lebih dari 15 menit disertai keringat dingin, segera hubungi ambulans (119) or pergi ke IGD terdekat karena itu adalah tanda **Serangan Jantung Koroner Akut (STEMI)**.`;
     }
 
     if (query.includes('pengobatan') && (query.includes('jantung') || query.includes('koroner') || query.includes('kardio'))) {
@@ -213,6 +289,66 @@ Penanganan penyakit jantung ditujukan untuk memperbaiki aliran darah vaskular ke
    * **Obat Penurun Kolesterol (contoh: Atorvastatin):** Menstabilkan plak kolesterol di dinding arteri agar tidak pecah.
    * **Pemasangan Ring Jantung (Angioplasti/Stent):** Membuka sumbatan pembuluh darah jantung menggunakan balon khusus.
    * **Operasi Bypass Jantung (CABG):** Membuat rute sirkulasi darah baru melewati pembuluh darah yang tersumbat.`;
+    }
+
+    if (query.includes('pertolongan') && (query.includes('jantung') || query.includes('serangan'))) {
+      return `🚨 **Pertolongan Pertama Serangan Jantung (Emergency Protocol)**
+
+Jika Anda atau orang di sekitar Anda mengalami gejala serangan jantung (nyeri dada menjalar, sesak napas, keringat dingin), segera lakukan langkah darurat ini:
+
+1. **Hentikan Aktivitas:** Segera dudukkan pasien dalam posisi setengah bersandar untuk mengurangi beban kerja jantung. Jangan biarkan pasien berjalan atau panik.
+2. **Hubungi Nomor Darurat:** Telepon Ambulans/Layanan Darurat medis di nomor **119** (atau bawa langsung ke IGD rumah sakit terdekat menggunakan kendaraan jika ambulans lama datang).
+3. **Longgarkan Pakaian:** Buka kancing kerah baju atau sabuk agar pasien dapat bernapas dengan lebih lega.
+4. **Kunyah Aspirin:** Jika pasien sadar penuh dan tidak memiliki riwayat alergi aspirin, berikan **1 tablet Aspirin (80-325 mg) untuk dikunyah** (membantu menghambat pembekuan darah di arteri koroner).
+5. **Lakukan CPR jika Hilang Kesadaran:** Jika pasien pingsan dan tidak bernapas/nadi tidak teraba, segera lakukan Resusitasi Jantung Paru (kompresi dada sedalam 5-6 cm dengan kecepatan 100-120x per menit) hingga tim medis tiba.`;
+    }
+
+    if (query.includes('faktor') && query.includes('risiko') && (query.includes('jantung') || query.includes('kardio'))) {
+      return `📊 **Faktor Risiko Penyakit Jantung**
+
+Faktor risiko penyakit jantung koroner dibagi menjadi dua kategori utama:
+
+1. **Faktor Risiko yang Bisa Diubah (Modifiable):**
+   * **Merokok:** Kandungan rokok mempercepat kerusakan dinding pembuluh darah (*aterosklerosis*).
+   * **Kolesterol Tinggi (LDL):** Menyebabkan plak lemak menyumbat arteri jantung (LDL Anda: ${rawData.cholesterol} mg/dL).
+   * **Hipertensi:** Tekanan tinggi merusak elastisitas dinding pembuluh darah (Tensi Anda: ${rawData.systolic}/${rawData.diastolic} mmHg).
+   * **Diabetes:** Gula darah merusak sel-sel pelapis pembuluh darah (Gula Anda: ${rawData.sugar} mg/dL).
+   * **Kurang Aktivitas Fisik & Obesitas:** Mempercepat penumpukan plak kolesterol dan meningkatkan beban kerja jantung.
+
+2. **Faktor Risiko yang Tidak Bisa Diubah (Non-modifiable):**
+   * **Riwayat Keluarga (Genetika):** Memiliki keluarga dengan serangan jantung di usia muda meningkatkan risiko Anda.
+   * **Usia:** Risiko meningkat seiring bertambahnya usia akibat penurunan kelenturan arteri.
+   * **Jenis Kelamin:** Pria secara statistik memiliki risiko serangan jantung lebih awal dibanding wanita.`;
+    }
+
+    if (query.includes('pencegahan') && (query.includes('jantung') || query.includes('kardio'))) {
+      return `🥦 **Pencegahan & Pola Hidup Sehat untuk Jantung**
+
+Menjaga kesehatan jantung jangka panjang berfokus pada pencegahan pembentukan plak lemak (*aterosklerosis*):
+
+1. **Pola Makan Ramah Jantung:**
+   * **Asam Lemak Omega-3:** Konsumsi ikan laut (kembung, tuna, salmon) dua kali seminggu untuk menstabilkan detak jantung dan meredakan inflamasi.
+   * **Serat Larut Air:** Serat oat, buah apel, dan jeruk mengikat kolesterol jahat di pencernaan untuk dibuang.
+   * **Ganti Lemak Jenuh dengan Lemak Baik:** Gunakan minyak zaitun/jagung untuk memasak, batasi konsumsi daging berlemak, santan, dan mentega.
+2. **Olahraga Aerobik Teratur:** Lakukan olahraga intensitas sedang seperti jalan cepat, bersepeda, atau berenang selama **30 menit sehari** (minimal 150 menit seminggu).
+3. **Kelola Stres & Tidur Cukup:** Stres kronis memicu pelepasan adrenalin yang membuat pembuluh darah menyempit dan meningkatkan tensi darah.`;
+    }
+
+    // D. Pola Hidup / Umum
+    if (query.includes('tidur') || query.includes('stres') || query.includes('istirahat') || query.includes('kortisol')) {
+      return `💤 **Pengaruh Stres, Tidur, dan Hormon Kortisol terhadap Kesehatan**
+
+Gaya hidup tidak hanya tentang makan dan olahraga, tetapi juga mencakup kualitas istirahat dan kesehatan mental yang memengaruhi jantung & gula darah:
+
+1. **Dampak Kurang Tidur (< 7 Jam Sehari):**
+   * Memicu pelepasan **Kortisol** (hormon stres) secara berlebihan. Kortisol memaksa hati melepas glukosa cadangan ke darah, sehingga kadar gula darah Anda meningkat.
+   * Meningkatkan nafsu makan makanan manis dan berlemak tinggi akibat terganggunya hormon kenyang (*leptin* dan *ghrelin*).
+2. **Dampak Stres Kronis terhadap Kardiovaskular:**
+   * Stres memicu hormon **Adrenalin** yang meningkatkan denyut nadi (sekarang: **${rawData.heartRate} bpm**) dan memaksa pembuluh darah menyempit secara mendadak (menaikkan tensi darah).
+   * Meningkatkan risiko robeknya plak kolesterol di pembuluh darah, memicu penyumbatan mendadak (serangan jantung).
+3. **Tips Relaksasi:**
+   * **Teknik Pernapasan 4-7-8:** Tarik napas 4 detik, tahan 7 detik, buang perlahan 8 detik untuk merangsang saraf parasimpatis menurunkan tensi secara instan.
+   * **Kualitas Tidur:** Jaga jadwal tidur yang konsisten dan hindari layar handphone 1 jam sebelum tidur.`;
     }
 
     // 1. TDEE & BMR METABOLIC CALCULATION
