@@ -130,8 +130,6 @@ export class MultilayerPerceptron {
         // Calculate output layer errors (delta)
         // For MSE loss and Sigmoid activation: delta = (activation - target) * sigmoid_derivative
         const lastLayerIdx = numLayers - 2; // Index in weights array
-        const lastZs = zs[lastZs ? zs.length - 1 : lastLayerIdx];
-        const lastActivations = activations[activations.length - 1];
         const prevActivations = activations[activations.length - 2];
         const lastDeltas = [];
 
