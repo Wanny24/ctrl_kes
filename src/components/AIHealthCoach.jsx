@@ -4,6 +4,7 @@ import { Send, Bot, User, Award, HelpCircle, Dumbbell, Apple, Activity, Ban } fr
 export default function AIHealthCoach({ rawData, prediction }) {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
+  const [activeChipTab, setActiveChipTab] = useState('semua');
   const messagesEndRef = useRef(null);
 
   // Initial welcome message based on health stats
@@ -105,6 +106,114 @@ Apa yang ingin Anda tanyakan hari ini? Pilih tombol rekomendasi di bawah atau ke
     const hasHighChol = rawData.cholesterol >= 200;
     const hasHighBP = rawData.systolic >= 140 || rawData.diastolic >= 90;
     const hasHighSugar = rawData.sugar >= 126;
+
+    // A. Hipertensi Specific Questions
+    if (query.includes('gejala') && (query.includes('hipertensi') || query.includes('tensi') || query.includes('darah tinggi'))) {
+      return `🩺 **Gejala & Ciri-ciri Hipertensi (Tekanan Darah Tinggi)**
+      
+Hipertensi sering disebut sebagai **"Silent Killer"** karena sebagian besar penderita tidak menunjukkan gejala apa pun hingga terjadi komplikasi organ serius. Namun, pada kondisi tensi yang sangat tinggi (krisis hipertensi) atau kondisi kronis, berikut ciri-ciri yang sering dirasakan:
+
+1. **Sakit Kepala Hebat:** Terutama di bagian belakang kepala (tengkuk), sering muncul di pagi hari.
+2. **Pusing atau Vertigo:** Perasaan melayang atau ruangan terasa berputar.
+3. **Kelelahan & Lemas:** Rasa lelah yang tidak wajar meski tidak melakukan aktivitas berat.
+4. **Masalah Penglihatan:** Pandangan menjadi kabur atau berbayang akibat tekanan pada pembuluh darah retina.
+5. **Nyeri Dada & Sesak Napas:** Jantung harus bekerja lebih keras memompa darah melawan tekanan yang tinggi.
+6. **Jantung Berdebar-debar (Palpitasi):** Sensasi detak jantung yang cepat atau tidak teratur.
+7. **Mimisan (Nosebleeds):** Pembuluh darah halus di dalam hidung pecah akibat tekanan darah tinggi.
+
+⚠️ *Catatan:* Satu-satunya cara mendeteksi hipertensi secara akurat adalah melakukan **pengukuran berkala menggunakan Tensimeter**. Tekanan darah Anda saat ini adalah **${rawData.systolic}/${rawData.diastolic} mmHg** (target sehat: < 120/80 mmHg).`;
+    }
+
+    if (query.includes('pengobatan') && (query.includes('hipertensi') || query.includes('tensi') || query.includes('darah tinggi'))) {
+      return `💊 **Pengobatan & Manajemen Kontrol Hipertensi**
+
+Mengontrol tekanan darah memerlukan kombinasi terapi gaya hidup sehat dan obat-obatan medis jangka panjang:
+
+1. **Terapi Gaya Hidup (Paling Utama):**
+   * **Diet DASH (Dietary Approaches to Stop Hypertension):** Pola makan tinggi serat (sayur, buah, gandum) dan protein rendah lemak.
+   * **Restriksi Garam/Natrium:** Batasi garam maksimal 1 sendok teh per hari (kurang dari 2.000 mg natrium). Hindari makanan olahan/kalengan.
+   * **Menurunkan Berat Badan:** Setiap penurunan 1 kg berat badan dapat menurunkan tekanan darah sekitar 1 mmHg.
+   * **Olahraga Teratur:** Latihan kardio sedang (jalan cepat, sepeda) minimal 150 menit seminggu.
+
+2. **Terapi Obat-obatan Medis (Umum Diresepkan):**
+   * **ACE Inhibitor / ARB (contoh: Captopril, Candesartan):** Melebarkan pembuluh darah.
+   * **Beta-Blockers (contoh: Bisoprolol):** Memperlambat detak jantung dan menurunkan kekuatan pompa jantung.
+   * **Diuretik (contoh: Furosemide):** Membuang kelebihan garam dan air lewat urine.
+
+⚠️ *Penting:* Jangan pernah mengonsumsi atau menghentikan obat tensi tanpa resep dari dokter Anda!`;
+    }
+
+    // B. Diabetes Specific Questions
+    if (query.includes('gejala') && (query.includes('diabetes') || query.includes('gula') || query.includes('kencing manis'))) {
+      return `🍭 **Gejala & Ciri-ciri Diabetes (Kencing Manis)**
+
+Diabetes Mellitus terjadi akibat kurangnya produksi insulin atau tidak sensitifnya sel terhadap insulin. Gejala klasiknya dikenal dengan istilah **3P**:
+
+1. **Poliuria (Sering Kencing):** Terutama di malam hari karena ginjal mencoba membuang kelebihan glukosa melalui urine.
+2. **Polidipsia (Sering Haus):** Akibat cairan tubuh banyak terbuang lewat urine, tubuh mengalami dehidrasi konstan.
+3. **Polifagia (Sering Lapar):** Sel-sel tubuh kelaparan karena glukosa dalam darah tidak bisa masuk ke dalam sel tanpa insulin yang cukup.
+
+**Ciri-ciri Pendukung Lainnya:**
+* **Penurunan Berat Badan Drastis:** Tubuh membakar cadangan lemak dan otot untuk energi karena tidak bisa memakai gula.
+* **Luka Lambat Sembuh:** Kadar gula tinggi menghambat sirkulasi darah dan merusak saraf sel imun.
+* **Kesemutan atau Mati Rasa:** Mati rasa di telapak kaki/tangan akibat kerusakan saraf tepi (*Neuropati Diabetik*).
+* **Pandangan Kabur:** Lensa mata membengkak akibat fluktuasi kadar cairan tubuh.
+
+💡 *Kondisi Anda:* Gula darah Anda saat ini adalah **${rawData.sugar} mg/dL** (Gula Darah Puasa normal: < 100 mg/dL).`;
+    }
+
+    if (query.includes('pengobatan') && (query.includes('diabetes') || query.includes('gula') || query.includes('kencing manis'))) {
+      return `💊 **Pengobatan & Manajemen Kontrol Diabetes**
+
+Diabetes adalah kondisi kronis yang tidak bisa disembuhkan secara total tetapi dapat **dikontrol secara optimal** agar tidak memicu komplikasi ginjal atau kebutaan:
+
+1. **Pilar Gaya Hidup:**
+   * **Pengaturan Karbohidrat:** Fokus pada makanan ber-Indeks Glikemik rendah (nasi merah dingin, oat gandum, ubi). Hindari gula pasir, sirup, tepung terigu.
+   * **Olahraga Setelah Makan:** Berjalan kaki 15 menit setelah makan malam merangsang otot untuk langsung membakar gula darah tanpa butuh insulin.
+   * **Manajemen Berat Badan:** Menurunkan lemak perut (lemak viseral) sangat membantu mengurangi resistensi insulin.
+
+2. **Pilar Medis:**
+   * **Obat Oral (contoh: Metformin, Glimepiride):** Membantu menurunkan produksi gula oleh hati dan memicu sel menyerap gula lebih baik.
+   * **Terapi Insulin:** Suntikan insulin buatan langsung ke jaringan lemak bawah kulit untuk menggantikan peran insulin tubuh.
+
+⚠️ *Penting:* Selalu konsultasikan dosis obat oral dan insulin dengan dokter penyakit dalam.`;
+    }
+
+    // C. Penyakit Jantung Specific Questions
+    if (query.includes('gejala') && (query.includes('jantung') || query.includes('koroner') || query.includes('kardio'))) {
+      return `❤️ **Gejala & Ciri-ciri Penyakit Jantung (Jantung Koroner & Gagal Jantung)**
+
+Penyakit jantung umumnya terjadi akibat penyempitan pembuluh darah arteri koroner atau melemahnya otot pompa jantung. Berikut ciri-ciri pentingnya:
+
+1. **Angina (Nyeri Dada Khas Jantung):** 
+   * Sensasi dada seperti tertekan benda berat, diremas, atau terbakar.
+   * Nyeri sering kali **menjalar** ke lengan kiri, pundak, leher, rahang, atau punggung.
+   * Biasanya dipicu oleh aktivitas fisik atau stres emosional dan membaik saat istirahat.
+2. **Sesak Napas (Dispnea):** Nafas terasa pendek karena jantung tidak optimal mengalirkan darah kaya oksigen dari paru-paru.
+3. **Mudah Lelah:** Rasa lelah yang ekstrem setelah melakukan aktivitas ringan (seperti menaiki tangga).
+4. **Jantung Berdebar (Aritmia):** Sensasi jantung berdetak terlalu cepat, lambat, atau melompat-lompat.
+5. **Pembengkakan Kaki (Edema):** Penumpukan cairan di pergelangan kaki akibat gagal jantung kanan yang melemah.
+6. **Keringat Dingin & Mual:** Sering muncul tiba-tiba bersamaan dengan nyeri dada.
+
+🚨 **TINDAKAN DARURAT:** Jika Anda mengalami nyeri dada hebat yang menjalar selama lebih dari 15 menit disertai keringat dingin, segera hubungi ambulans (119) atau pergi ke IGD terdekat karena itu adalah tanda **Serangan Jantung Koroner Akut (STEMI)**.`;
+    }
+
+    if (query.includes('pengobatan') && (query.includes('jantung') || query.includes('koroner') || query.includes('kardio'))) {
+      return `💊 **Pengobatan & Manajemen Kontrol Penyakit Jantung**
+
+Penanganan penyakit jantung ditujukan untuk memperbaiki aliran darah vaskular ke otot jantung dan memperkuat daya pompa jantung:
+
+1. **Manajemen Gaya Hidup:**
+   * **Stop Merokok Secara Mutlak:** Asap rokok mengandung racun pembentuk kerak pembuluh darah (*aterosklerosis*).
+   * **Batasi Lemak Jenuh & Kolesterol:** Hindari gorengan, jeroan, daging merah berlemak, mentega. Kolesterol Anda saat ini adalah **${rawData.cholesterol} mg/dL** (target: < 200 mg/dL).
+   * **Latihan Kardio Terbimbing:** Olahraga aerobik ringan yang aman (jalan santai) untuk menguatkan kolateral pembuluh darah jantung.
+
+2. **Manajemen Medis & Bedah:**
+   * **Obat Pengencer Darah (contoh: Aspirin, Clopidogrel):** Mencegah pembekuan darah yang menyumbat arteri koroner.
+   * **Obat Penurun Kolesterol (contoh: Atorvastatin):** Menstabilkan plak kolesterol di dinding arteri agar tidak pecah.
+   * **Pemasangan Ring Jantung (Angioplasti/Stent):** Membuka sumbatan pembuluh darah jantung menggunakan balon khusus.
+   * **Operasi Bypass Jantung (CABG):** Membuat rute sirkulasi darah baru melewati pembuluh darah yang tersumbat.`;
+    }
 
     // 1. TDEE & BMR METABOLIC CALCULATION
     if (query.includes('kalori') || query.includes('bmr') || query.includes('tdee') || query.includes('metabolisme')) {
@@ -300,13 +409,46 @@ Berdasarkan profil Anda:
 Apakah ada pertanyaan spesifik tentang diet, olahraga, kolesterol, obat-obatan, atau tensi darah yang ingin Anda tanyakan?`;
   };
 
-  const suggestionChips = [
-    { text: "🥗 Menu Makanan 1 Hari", icon: Apple },
-    { text: "🔥 Hitung Kalori Harian (TDEE)", icon: Activity },
-    { text: "💊 Kapan Harus Minum Obat?", icon: HelpCircle },
-    { text: "🏃 Panduan Olahraga Aman", icon: Dumbbell },
-    { text: "🚭 Bahaya Nikotin bagi Jantung", icon: Ban }
-  ];
+  const suggestionGroups = {
+    hipertensi: {
+      chips: [
+        { text: "Gejala & Ciri-ciri Hipertensi", icon: HelpCircle },
+        { text: "Pengobatan & Kontrol Hipertensi", icon: Activity }
+      ]
+    },
+    diabetes: {
+      chips: [
+        { text: "Gejala & Ciri-ciri Diabetes", icon: HelpCircle },
+        { text: "Pengobatan & Kontrol Diabetes", icon: Activity }
+      ]
+    },
+    jantung: {
+      chips: [
+        { text: "Gejala & Ciri-ciri Penyakit Jantung", icon: HelpCircle },
+        { text: "Pengobatan & Kontrol Penyakit Jantung", icon: Activity }
+      ]
+    },
+    umum: {
+      chips: [
+        { text: "🥗 Menu Makanan 1 Hari", icon: Apple },
+        { text: "🔥 Hitung Kalori Harian (TDEE)", icon: Activity },
+        { text: "🏃 Panduan Olahraga Aman", icon: Dumbbell },
+        { text: "🚭 Bahaya Nikotin bagi Jantung", icon: Ban }
+      ]
+    }
+  };
+
+  const getRenderedChips = () => {
+    if (activeChipTab === 'semua') {
+      return [
+        ...suggestionGroups.hipertensi.chips,
+        ...suggestionGroups.diabetes.chips,
+        ...suggestionGroups.jantung.chips,
+        ...suggestionGroups.umum.chips
+      ];
+    }
+    return suggestionGroups[activeChipTab].chips;
+  };
 
   return (
     <div className="glass-panel chat-container-panel" style={{ padding: '24px' }}>
@@ -340,6 +482,46 @@ Apakah ada pertanyaan spesifik tentang diet, olahraga, kolesterol, obat-obatan, 
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Category Tabs for suggestion chips */}
+      <div 
+        style={{ 
+          display: 'flex', 
+          gap: '8px', 
+          marginBottom: '12px', 
+          flexWrap: 'wrap',
+          borderBottom: '1px solid var(--border-light)',
+          paddingBottom: '10px'
+        }}
+      >
+        {[
+          { id: 'semua', label: 'Semua Kategori' },
+          { id: 'hipertensi', label: '🩺 Hipertensi' },
+          { id: 'diabetes', label: '🍭 Diabetes' },
+          { id: 'jantung', label: '❤️ Jantung' },
+          { id: 'umum', label: '🥗 Pola Hidup' }
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            onClick={() => setActiveChipTab(tab.id)}
+            style={{
+              background: activeChipTab === tab.id ? 'var(--accent-purple)' : 'rgba(255,255,255,0.02)',
+              border: '1px solid',
+              borderColor: activeChipTab === tab.id ? 'var(--accent-purple)' : 'var(--border-light)',
+              borderRadius: '16px',
+              padding: '5px 12px',
+              fontSize: '11.5px',
+              color: 'var(--text-primary)',
+              cursor: 'pointer',
+              fontWeight: activeChipTab === tab.id ? '600' : 'normal',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       {/* Suggestion Chips */}
       <div 
         style={{ 
@@ -352,7 +534,7 @@ Apakah ada pertanyaan spesifik tentang diet, olahraga, kolesterol, obat-obatan, 
         }}
         className="chips-scroll-container"
       >
-        {suggestionChips.map((chip, idx) => {
+        {getRenderedChips().map((chip, idx) => {
           const ChipIcon = chip.icon;
           return (
             <button
