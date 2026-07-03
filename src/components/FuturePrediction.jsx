@@ -174,12 +174,6 @@ export default function FuturePrediction() {
       });
     }
 
-    const metricTitle = activeMetric === 'cholesterol' 
-      ? 'Kolesterol (mg/dL)' 
-      : activeMetric === 'systolic' 
-      ? 'Tekanan Darah Sistolik (mmHg)' 
-      : 'Gula Darah (mg/dL)';
-
     const metricColor = activeMetric === 'cholesterol' 
       ? '#9d4edd' 
       : activeMetric === 'systolic' 
