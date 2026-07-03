@@ -549,19 +549,28 @@ Apakah ada pertanyaan spesifik tentang diet, olahraga, kolesterol, obat-obatan, 
     hipertensi: {
       chips: [
         { text: "Gejala & Ciri-ciri Hipertensi", icon: HelpCircle },
-        { text: "Pengobatan & Kontrol Hipertensi", icon: Activity }
+        { text: "Pengobatan & Kontrol Hipertensi", icon: Activity },
+        { text: "Pencegahan & Pola Makan Hipertensi", icon: Apple },
+        { text: "Bahaya & Komplikasi Hipertensi", icon: Ban },
+        { text: "Klasifikasi Tekanan Darah", icon: Activity }
       ]
     },
     diabetes: {
       chips: [
         { text: "Gejala & Ciri-ciri Diabetes", icon: HelpCircle },
-        { text: "Pengobatan & Kontrol Diabetes", icon: Activity }
+        { text: "Pengobatan & Kontrol Diabetes", icon: Activity },
+        { text: "Pencegahan & Pola Makan Diabetes", icon: Apple },
+        { text: "Bahaya & Komplikasi Diabetes", icon: Ban },
+        { text: "Perbedaan Diabetes Tipe 1 & 2", icon: HelpCircle }
       ]
     },
     jantung: {
       chips: [
         { text: "Gejala & Ciri-ciri Penyakit Jantung", icon: HelpCircle },
-        { text: "Pengobatan & Kontrol Penyakit Jantung", icon: Activity }
+        { text: "Pengobatan & Kontrol Penyakit Jantung", icon: Activity },
+        { text: "Pertolongan Pertama Serangan Jantung", icon: Ban },
+        { text: "Faktor Risiko Penyakit Jantung", icon: HelpCircle },
+        { text: "Pencegahan & Pola Hidup Sehat Jantung", icon: Apple }
       ]
     },
     umum: {
@@ -569,7 +578,8 @@ Apakah ada pertanyaan spesifik tentang diet, olahraga, kolesterol, obat-obatan, 
         { text: "🥗 Menu Makanan 1 Hari", icon: Apple },
         { text: "🔥 Hitung Kalori Harian (TDEE)", icon: Activity },
         { text: "🏃 Panduan Olahraga Aman", icon: Dumbbell },
-        { text: "🚭 Bahaya Nikotin bagi Jantung", icon: Ban }
+        { text: "🚭 Bahaya Nikotin bagi Jantung", icon: Ban },
+        { text: "💤 Pentingnya Tidur & Stres", icon: HelpCircle }
       ]
     }
   };
